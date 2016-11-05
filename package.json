@@ -1,30 +1,70 @@
 {
-  "name": "hubot-jenkins-auth",
-  "description": "A hubot script that does the things",
-  "version": "0.0.2",
-  "author": "Jeff Hann <jeffhann@gmail.com>",
-  "license": "MIT",
-
-  "keywords": "hubot, hubot-scripts",
-
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-jenkins-auth.git"
+  "_args": [
+    [
+      {
+        "raw": "github:obihann/Hubut-Jenkins-Auth",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "github:obihann/Hubut-Jenkins-Auth",
+        "spec": "github:obihann/Hubut-Jenkins-Auth",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:obihann/Hubut-Jenkins-Auth.git",
+          "sshUrl": "git+ssh://git@github.com/obihann/Hubut-Jenkins-Auth.git",
+          "httpsUrl": "git+https://github.com/obihann/Hubut-Jenkins-Auth.git",
+          "gitUrl": "git://github.com/obihann/Hubut-Jenkins-Auth.git",
+          "shortcut": "github:obihann/Hubut-Jenkins-Auth",
+          "directUrl": "https://raw.githubusercontent.com/obihann/Hubut-Jenkins-Auth/master/package.json"
+        }
+      },
+      "/Users/jeffhann/DevOps/jenkins-botler"
+    ]
+  ],
+  "_from": "obihann/Hubut-Jenkins-Auth",
+  "_id": "hubot-jenkins-auth@0.0.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/hubot-jenkins-auth",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "github:obihann/Hubut-Jenkins-Auth",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "github:obihann/Hubut-Jenkins-Auth",
+    "spec": "github:obihann/Hubut-Jenkins-Auth",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:obihann/Hubut-Jenkins-Auth.git",
+      "sshUrl": "git+ssh://git@github.com/obihann/Hubut-Jenkins-Auth.git",
+      "httpsUrl": "git+https://github.com/obihann/Hubut-Jenkins-Auth.git",
+      "gitUrl": "git://github.com/obihann/Hubut-Jenkins-Auth.git",
+      "shortcut": "github:obihann/Hubut-Jenkins-Auth",
+      "directUrl": "https://raw.githubusercontent.com/obihann/Hubut-Jenkins-Auth/master/package.json"
+    }
   },
-
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+ssh://git@github.com/obihann/Hubut-Jenkins-Auth.git#74a9f780bf22329a50743f5e6e7fbb289d87dbb8",
+  "_shasum": "355f699afdfa0b4239952f511cf9bdffb4a13143",
+  "_shrinkwrap": null,
+  "_spec": "github:obihann/Hubut-Jenkins-Auth",
+  "_where": "/Users/jeffhann/DevOps/jenkins-botler",
+  "author": {
+    "name": "Jeff Hann",
+    "email": "jeffhann@gmail.com"
+  },
   "bugs": {
     "url": "https://github.com/hubot-scripts/hubot-jenkins-auth/issues"
   },
-
-  "dependencies": {
-  },
-
-  "peerDependencies": {
-    "hubot": "2.x"
-  },
-
+  "dependencies": {},
+  "description": "A hubot script that does the things",
   "devDependencies": {
-    "hubot-test-helper": "^1.3.0",
     "chai": "^2.1.1",
     "coffee-script": "1.6.3",
     "grunt": "^0.4.5",
@@ -33,15 +73,33 @@
     "grunt-mocha-test": "~0.12.7",
     "grunt-release": "~0.11.0",
     "hubot": "2.x",
+    "hubot-test-helper": "^1.3.0",
     "matchdep": "~0.3.0",
     "mocha": "^2.1.0",
     "sinon": "^1.13.0",
     "sinon-chai": "^2.7.0"
   },
-
+  "gitHead": "74a9f780bf22329a50743f5e6e7fbb289d87dbb8",
+  "homepage": "https://github.com/hubot-scripts/hubot-jenkins-auth#readme",
+  "keywords": [
+    "hubot",
+    "hubot-scripts"
+  ],
+  "license": "MIT",
   "main": "index.coffee",
-
+  "name": "hubot-jenkins-auth",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "hubot": "2.x"
+  },
+  "readme": "# hubot-jenkins-auth\n\nA hubot script that does the things\n\nSee [`src/jenkins-auth.coffee`](src/jenkins-auth.coffee) for full documentation.\n\n## Installation\n\nIn hubot project repo, run:\n\n`npm install hubot-jenkins-auth --save`\n\nThen add **hubot-jenkins-auth** to your `external-scripts.json`:\n\n```json\n[\n  \"hubot-jenkins-auth\"\n]\n```\n\n## Sample Interaction\n\n```\nuser1>> hubot hello\nhubot>> hello!\n```\n\n## NPM Module\n\nhttps://www.npmjs.com/package/hubot-jenkins-auth\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hubot-scripts/hubot-jenkins-auth.git"
+  },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "version": "0.0.2"
 }

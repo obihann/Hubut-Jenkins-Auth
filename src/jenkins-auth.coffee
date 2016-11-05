@@ -1,19 +1,22 @@
 # Description
 #   A hubot script that does the things
 #
+# Dependencies:
+#   "hubot-jenkins": "^0.2.0"
+#
 # Configuration:
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   hubot hello - <what the respond trigger does>
-#   orly - <what the hear trigger does>
+#   hubot auth users - List all users in auth file
+#   hubot auth jobs - List all jobs and authorized users
 #
 # Notes:
 #   <optional notes required for the script>
 #
 # Author:
 #   Jeff Hann <jeffhann@gmail.com>
-#
+
 querystring = require 'querystring'
 yaml        = require 'js-yaml'
 fs          = require 'fs'
@@ -22,7 +25,7 @@ Promise     = require 'bluebird'
 
 AUTH_FILE = '.jenkins-access.yml'
 
-jenkinsUsers = (msg) ->
+authUsers = (msg) ->
   auth_path = path.join(__dirname, '../.jenkins-access.yml')
   users = yaml.safeLoad(fs.readFileSync(auth_path, 'utf8')).users
 
@@ -32,7 +35,7 @@ jenkinsUsers = (msg) ->
 
   msg.send resp
 
-jenkinsJobs = (msg) ->
+authJobs = (msg) ->
   auth_path = path.join(__dirname, '../.jenkins-access.yml')
   doc = yaml.safeLoad(fs.readFileSync(auth_path, 'utf8'))
   jenkins_access = doc
@@ -47,19 +50,13 @@ jenkinsJobs = (msg) ->
   msg.send resp
 
 module.exports = (robot) ->
-  robot.respond /hello/, (res) ->
-    res.reply "hello!"
+  robot.respond /auth users/i, (msg) ->
+    authUsers(msg)
 
-  robot.hear /orly/, (res) ->
-    res.send "yarly"
+  robot.respond /auth jobs/i, (msg) ->
+    authJobs(msg)
 
-  robot.respond /auth users( (.+))?/i, (msg) ->
-    jenkinsUsers(msg)
-
-  robot.respond /auth jobs( (.+))?/i, (msg) ->
-    jenkinsJobs(msg)
-
-  robot.jenkins = {
-    users: jenkinsUsers
-    jobs: jenkinsJobs
+  robot.auth = {
+    users: authUsers
+    job: authJobs
   }
