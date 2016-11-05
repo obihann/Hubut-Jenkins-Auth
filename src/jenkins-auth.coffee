@@ -8,6 +8,7 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
+#   hubot auth admins - List all admins in auth file
 #   hubot auth users - List all users in auth file
 #   hubot auth jobs - List all jobs and authorized users
 #
@@ -24,15 +25,17 @@ path        = require 'path'
 Promise     = require 'bluebird'
 
 AUTH_FILE = '.jenkins-access.yml'
+ERROR_MSG = 'http://i.imgur.com/gcxjB9d.png'
 
 auth_path = path.join(__dirname, '../', AUTH_FILE)
 auth_data = yaml.safeLoad(fs.readFileSync(auth_path, 'utf8'))
 
-isAdmin = (currentUser) ->
+isAdmin = (msg) ->
   resp = false
   admins = auth_data.admins
+  currentUser = msg.message.user.name
 
-  return Promise.each admins, (admin) ->
+  Promise.each admins, (admin) ->
     resp = true if admin.name == currentUser
   .then () ->
     if resp == true
@@ -40,33 +43,51 @@ isAdmin = (currentUser) ->
     else
       Promise.reject()
 
+authAdmins = (msg) ->
+  resp = 'Jobs: \n'
+  admins = auth_data.admins
+
+  Promise.each admins, (admin) ->
+    resp += '\t- ' + admin.name + '\n'
+  .then () ->
+    Promise.resolve resp
+
 authUsers = (msg) ->
-  resp = ''
+  resp = 'Users: \n'
   users = auth_data.users
 
-  isAdmin(msg.message.user.name).then () ->
-    users.forEach (user) ->
-      resp += '- ' + user.name + '\n'
-
-    msg.send resp
-  .catch () ->
-    msg.send 'http://i.imgur.com/gcxjB9d.png'
+  Promise.each users, (user) ->
+    resp += '\t- ' + user.name + '\n'
+  .then () ->
+    Promise.resolve resp
 
 authJobs = (msg) ->
-  resp = ''
+  resp = 'Jobs: \n'
   jobs = auth_data.jobs
 
-  jobs.forEach (job) ->
-    resp += '- ' + job.name + '\n\tUsers:\n'
-
-    job.users.forEach (user) ->
-      resp += '\t- ' + user.name + '\n'
-
-  msg.send resp
+  Promise.each jobs, (job) ->
+    resp += '\t- ' + job.name + '\n'
+  .then () ->
+    Promise.resolve resp
 
 module.exports = (robot) ->
+  robot.respond /auth admins/i, (msg) ->
+    isAdmin(msg).then () ->
+      authAdmins(msg).then (resp) ->
+        msg.send resp
+    .catch () ->
+      msg.send ERROR_MSG
+
   robot.respond /auth users/i, (msg) ->
-    authUsers(msg)
+    isAdmin(msg).then () ->
+      authUsers(msg).then (resp) ->
+        msg.send resp
+    .catch () ->
+      msg.send ERROR_MSG
 
   robot.respond /auth jobs/i, (msg) ->
-    authJobs(msg)
+    isAdmin(msg).then () ->
+      authJobs(msg).then (resp) ->
+        msg.send resp
+    .catch () ->
+      msg.send ERROR_MSG
