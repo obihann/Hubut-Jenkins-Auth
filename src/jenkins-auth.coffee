@@ -26,9 +26,10 @@ Promise     = require 'bluebird'
 
 AUTH_FILE = '.jenkins-access.yml'
 ERROR_MSG = 'http://i.imgur.com/gcxjB9d.png'
+ENCODING  = 'utf8'
 
 auth_path = path.join(__dirname, '../', AUTH_FILE)
-auth_data = yaml.safeLoad(fs.readFileSync(auth_path, 'utf8'))
+auth_data = yaml.safeLoad(fs.readFileSync(auth_path, ENCODING))
 
 isAdmin = (msg) ->
   resp = false
@@ -43,7 +44,7 @@ isAdmin = (msg) ->
     else
       Promise.reject()
 
-authAdmins = (msg) ->
+listAdmins = (msg) ->
   resp = 'Jobs: \n'
   admins = auth_data.admins
 
@@ -52,7 +53,7 @@ authAdmins = (msg) ->
   .then () ->
     Promise.resolve resp
 
-authUsers = (msg) ->
+listUsers = (msg) ->
   resp = 'Users: \n'
   users = auth_data.users
 
@@ -61,7 +62,7 @@ authUsers = (msg) ->
   .then () ->
     Promise.resolve resp
 
-authJobs = (msg) ->
+listJobs = (msg) ->
   resp = 'Jobs: \n'
   jobs = auth_data.jobs
 
@@ -70,24 +71,49 @@ authJobs = (msg) ->
   .then () ->
     Promise.resolve resp
 
+save = () ->
+  fs.writeFileSync auth_path, (yaml.safeDump auth_data), ENCODING
+
+authAdd = (msg, type) ->
+  auth_data[type].push
+    'name': msg.match[3]
+
+  save()
+
+  Promise.resolve 'adding ' + msg.match[3]
+
 module.exports = (robot) ->
-  robot.respond /auth admins/i, (msg) ->
+  robot.respond /auth admins([ ](add|delete|del)[ ](.*))?/i, (msg) ->
     isAdmin(msg).then () ->
-      authAdmins(msg).then (resp) ->
-        msg.send resp
+      switch msg.match[2]
+        when 'add'
+          authAdd(msg, 'admins').then (resp) ->
+            msg.send resp
+        when 'del', 'delete'
+          msg.send 'removing ' + user
+        else
+          listAdmins(msg).then (resp) ->
+            msg.send resp
     .catch () ->
       msg.send ERROR_MSG
 
-  robot.respond /auth users/i, (msg) ->
+  robot.respond /auth users([ ](add|delete|del)[ ](.*))?/i, (msg) ->
     isAdmin(msg).then () ->
-      authUsers(msg).then (resp) ->
-        msg.send resp
+      switch msg.match[2]
+        when 'add'
+          authAdd(msg, 'users').then (resp) ->
+            msg.send resp
+        when 'del', 'delete'
+          msg.send 'removing ' + user
+        else
+          listUsers(msg).then (resp) ->
+            msg.send resp
     .catch () ->
       msg.send ERROR_MSG
 
-  robot.respond /auth jobs/i, (msg) ->
+  robot.respond /auth jobs([ ](add|delete|del)[ ](.*))?/i, (msg) ->
     isAdmin(msg).then () ->
-      authJobs(msg).then (resp) ->
+      listJobs(msg).then (resp) ->
         msg.send resp
     .catch () ->
       msg.send ERROR_MSG
