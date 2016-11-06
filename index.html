@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Hubot Jenkins Auth Manager by obihann</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Hubot Jenkins Auth Manager</h1>
+        <h2>Stop editing permissions it by hand, let the robots do it for you.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/obihann/Hubut-Jenkins-Auth/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/obihann/Hubut-Jenkins-Auth/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/obihann/Hubut-Jenkins-Auth" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p>A Hubot plugin to manage the credentials database of obihann/hubot-jenkins. </p>
+
+<p>See <a href="src/jenkins-auth.coffee"><code>src/jenkins-auth.coffee</code></a> for full documentation.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>In Hubot project repo, run:</p>
+
+<p><code>npm install obihann/hubot-jenkins-auth --save</code></p>
+
+<p>Then add <strong>hubot-jenkins-auth</strong> to your <code>external-scripts.json</code>:</p>
+
+<div class="highlight highlight-source-json"><pre>[
+  <span class="pl-s"><span class="pl-pds">"</span>hubot-jenkins-auth<span class="pl-pds">"</span></span>
+]</pre></div>
+
+<h2>
+<a id="sample-interaction" class="anchor" href="#sample-interaction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample Interaction</h2>
+
+<pre><code>user1&gt;&gt; auth admins
+hubot&gt;&gt;
+users: 
+    - obihann
+
+user1&gt;&gt; auth projects
+hubot&gt;&gt;
+users: 
+    - Prod Deployment A
+
+user1&gt;&gt; auth users
+hubot&gt;&gt;
+users: 
+    - obihann
+    - bob
+</code></pre>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
