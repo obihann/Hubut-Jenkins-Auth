@@ -2,18 +2,12 @@
 #   A hubot script that does the things
 #
 # Dependencies:
-#   "hubot-jenkins": "^0.2.0"
-#
-# Configuration:
-#   LIST_OF_ENV_VARS_TO_SET
+#   "obihann/hubot-jenkins": "^0.2.0"
 #
 # Commands:
-#   hubot auth admins - List all admins in auth file
-#   hubot auth users - List all users in auth file
-#   hubot auth jobs - List all jobs and authorized users
-#
-# Notes:
-#   <optional notes required for the script>
+#   hubot auth admins <del|delete|remove|add> <user> - List all admins in auth file, delete an admin, or create a new one
+#   hubot auth users <del|delete|remove|add> <user> - List all users in auth file, delete a job, or create a new one
+#   hubot auth jobs <del|delete|remove|add> <user> - List all jobs and authorized users, delete a job, or create a new one
 #
 # Author:
 #   Jeff Hann <jeffhann@gmail.com>
