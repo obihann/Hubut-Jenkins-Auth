@@ -37,7 +37,3 @@ users:
     - obihann
     - bob
 ```
-
-## NPM Module
-
-https://www.npmjs.com/package/hubot-jenkins-auth
