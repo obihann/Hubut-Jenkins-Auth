@@ -8,7 +8,7 @@ See [`src/jenkins-auth.coffee`](src/jenkins-auth.coffee) for full documentation.
 
 In hubot project repo, run:
 
-`npm install hubot-jenkins-auth --save`
+`npm install obihann/hubot-jenkins-auth --save`
 
 Then add **hubot-jenkins-auth** to your `external-scripts.json`:
 
