@@ -44,53 +44,49 @@ isAdmin = (msg) ->
     else
       Promise.reject()
 
-listAdmins = (msg) ->
-  resp = 'Jobs: \n'
-  admins = auth_data.admins
-
-  Promise.each admins, (admin) ->
-    resp += '\t- ' + admin.name + '\n'
-  .then () ->
-    Promise.resolve resp
-
-listUsers = (msg) ->
-  resp = 'Users: \n'
-  users = auth_data.users
-
-  Promise.each users, (user) ->
-    resp += '\t- ' + user.name + '\n'
-  .then () ->
-    Promise.resolve resp
-
-listJobs = (msg) ->
-  resp = 'Jobs: \n'
-  jobs = auth_data.jobs
-
-  Promise.each jobs, (job) ->
-    resp += '\t- ' + job.name + '\n'
-  .then () ->
-    Promise.resolve resp
-
-save = () ->
+authSave = () ->
   fs.writeFileSync auth_path, (yaml.safeDump auth_data), ENCODING
+
+authList = (msg, type) ->
+  resp = type + ': \n'
+  items = auth_data[type]
+
+  Promise.each items, (item) ->
+    resp += '\t- ' + item.name + '\n'
+  .then () ->
+    Promise.resolve resp
 
 authAdd = (msg, type) ->
   auth_data[type].push
     'name': msg.match[3]
 
-  save()
+  authSave()
 
   Promise.resolve 'adding ' + msg.match[3]
 
+authRemove = (msg, type) ->
+  names = auth_data[type].map (item) ->
+    item.name
+
+  pos = names.indexOf msg.match[3]
+
+  auth_data[type].splice(pos, 1)
+  authSave()
+
+  Promise.resolve 'removing ' + msg.match[3]
+
 module.exports = (robot) ->
   robot.respond /auth admins([ ](add|delete|del)[ ](.*))?/i, (msg) ->
+    type = 'admins'
+
     isAdmin(msg).then () ->
       switch msg.match[2]
         when 'add'
-          authAdd(msg, 'admins').then (resp) ->
+          authAdd(msg, type).then (resp) ->
             msg.send resp
         when 'del', 'delete'
-          msg.send 'removing ' + user
+          authRemove(msg, type).then (resp) ->
+            msg.send resp
         else
           listAdmins(msg).then (resp) ->
             msg.send resp
@@ -98,22 +94,38 @@ module.exports = (robot) ->
       msg.send ERROR_MSG
 
   robot.respond /auth users([ ](add|delete|del)[ ](.*))?/i, (msg) ->
+    type = 'users'
+
     isAdmin(msg).then () ->
       switch msg.match[2]
         when 'add'
-          authAdd(msg, 'users').then (resp) ->
+          authAdd(msg, type).then (resp) ->
             msg.send resp
-        when 'del', 'delete'
-          msg.send 'removing ' + user
+        when 'del', 'delete', 'remove'
+          authRemove(msg, type).then (resp) ->
+            msg.send resp
         else
-          listUsers(msg).then (resp) ->
+          authList(msg, type).then (resp) ->
             msg.send resp
     .catch () ->
       msg.send ERROR_MSG
 
   robot.respond /auth jobs([ ](add|delete|del)[ ](.*))?/i, (msg) ->
-    isAdmin(msg).then () ->
-      listJobs(msg).then (resp) ->
-        msg.send resp
-    .catch () ->
-      msg.send ERROR_MSG
+    type = 'jobs'
+
+    switch msg.match[2]
+      when 'add'
+        isAdmin(msg).then () ->
+          authAdd(msg, type).then (resp) ->
+            msg.send resp
+        .catch () ->
+          msg.send ERROR_MSG
+      when 'del', 'delete'
+        isAdmin(msg).then () ->
+          authRemove(msg, type).then (resp) ->
+            msg.send resp
+        .catch () ->
+          msg.send ERROR_MSG
+      else
+        listJobs(msg).then (resp) ->
+          msg.send resp
