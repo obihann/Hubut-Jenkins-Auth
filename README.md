@@ -1,6 +1,6 @@
-# hubot-jenkins-auth
+# Hubot Jenkins Auth Manager
 
-A hubot script that does the things
+A Hubot plugin to manage the credentiasl database of @obihann/hubot-jenkins. Stop editting it by hand, let the robots do it for you.
 
 See [`src/jenkins-auth.coffee`](src/jenkins-auth.coffee) for full documentation.
 
