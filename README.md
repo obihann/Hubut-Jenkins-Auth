@@ -17,7 +17,7 @@ Then add **hubot-jenkins-auth** to your `external-scripts.json`:
 ```
 
 ## Commands:
-- ```hubot auth admins <del|delete|remove|add> <user>``` - List all admins in auth file, delete an admin, or create a new one`
+- ```hubot auth admins <del|delete|remove|add> <user>``` - List all admins in auth file, delete an admin, or create a new one
 - ```hubot auth users <del|delete|remove|add> <user>``` - List all users in auth file, delete a job, or create a new one
 - ```hubot auth jobs <del|delete|remove|add> <job>``` - List all jobs and authorized users, delete a job, or create a new one
 
