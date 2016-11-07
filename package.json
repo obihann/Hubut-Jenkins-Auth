@@ -85,7 +85,7 @@
     "hubot",
     "hubot-scripts"
   ],
-  "license": "MIT",
+  "license": "GPL-2.0",
   "main": "index.coffee",
   "name": "hubot-jenkins-auth",
   "optionalDependencies": {},
@@ -101,5 +101,5 @@
   "scripts": {
     "test": "grunt test"
   },
-  "version": "1.0.0-beta"
+  "version": "1.1.0-beta"
 }

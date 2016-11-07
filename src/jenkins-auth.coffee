@@ -7,7 +7,8 @@
 # Commands:
 #   hubot auth admins <del|delete|remove|add> <user> - List all admins in auth file, delete an admin, or create a new one
 #   hubot auth users <del|delete|remove|add> <user> - List all users in auth file, delete a job, or create a new one
-#   hubot auth jobs <del|delete|remove|add> <job> - List all jobs and authorized users, delete a job, or create a new one
+#   hubot auth jobs <del|delete|remove|add> <job> - List all jobs, delete a job, or create a new one
+#   hubot auth job <del|delete|remove|add> <user> <job> - List add, or remove authorized users for a specific job.
 #
 # Author:
 #   Jeff Hann <jeffhann@gmail.com>
@@ -50,6 +51,15 @@ authList = (msg, type) ->
   .then () ->
     Promise.resolve resp
 
+listJob = (msg) ->
+  resp = msg.match[4] + ':\n'
+  items = auth_data.jobs
+
+  Promise.each items, (item) ->
+    resp += '\t- ' + item.name + '\n'
+  .then () ->
+    Promise.resolve resp
+
 authAdd = (msg, type) ->
   auth_data[type].push
     'name': msg.match[3]
@@ -70,7 +80,7 @@ authRemove = (msg, type) ->
   Promise.resolve 'removing ' + msg.match[3]
 
 module.exports = (robot) ->
-  robot.respond /auth admins([ ](add|delete|del)[ ](.*))?/i, (msg) ->
+  robot.respond /auth admins(?: (add|delete|del) (.*))?/i, (msg) ->
     type = 'admins'
 
     isAdmin(msg).then () ->
@@ -82,12 +92,12 @@ module.exports = (robot) ->
           authRemove(msg, type).then (resp) ->
             msg.send resp
         else
-          listAdmins(msg).then (resp) ->
+          authList(msg, type).then (resp) ->
             msg.send resp
     .catch () ->
       msg.send ERROR_MSG
 
-  robot.respond /auth users([ ](add|delete|del)[ ](.*))?/i, (msg) ->
+  robot.respond /auth users(?: (add|delete|del) (.*))?/i, (msg) ->
     type = 'users'
 
     isAdmin(msg).then () ->
@@ -104,7 +114,7 @@ module.exports = (robot) ->
     .catch () ->
       msg.send ERROR_MSG
 
-  robot.respond /auth jobs([ ](add|delete|del)[ ](.*))?/i, (msg) ->
+  robot.respond /auth jobs(?: (add|delete|del) (.*))?/i, (msg) ->
     type = 'jobs'
 
     switch msg.match[2]
@@ -121,5 +131,25 @@ module.exports = (robot) ->
         .catch () ->
           msg.send ERROR_MSG
       else
-        listJobs(msg).then (resp) ->
+        authList(msg, type).then (resp) ->
+          msg.send resp
+
+  robot.respond /auth job (?:(add|delete|del)[ ]?([^\s]+) )?(.*)/i, (msg) ->
+    type = 'job'
+
+    switch msg.match[2]
+      when 'add'
+        isAdmin(msg).then () ->
+          authAdd(msg, type).then (resp) ->
+            msg.send resp
+        .catch () ->
+          msg.send ERROR_MSG
+      when 'del', 'delete'
+        isAdmin(msg).then () ->
+          authRemove(msg, type).then (resp) ->
+            msg.send resp
+        .catch () ->
+          msg.send ERROR_MSG
+      else
+        listJob(msg).then (resp) ->
           msg.send resp
