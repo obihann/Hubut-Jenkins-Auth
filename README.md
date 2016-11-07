@@ -2,7 +2,11 @@
 
 A Hubot plugin to manage the credentiasl database of obihann/hubot-jenkins. Stop editting it by hand, let the robots do it for you.
 
-See [`src/jenkins-auth.coffee`](src/jenkins-auth.coffee) for full documentation.
+# Commands:
+- hubot auth admins <del|delete|remove|add> <user> - List all admins in auth file, delete an admin, or create a new one`
+- hubot auth users <del|delete|remove|add> <user> - List all users in auth file, delete a job, or create a new one
+- hubot auth jobs <del|delete|remove|add> <job> - List all jobs and authorized users, delete a job, or create a new one
+
 
 ## Installation
 
