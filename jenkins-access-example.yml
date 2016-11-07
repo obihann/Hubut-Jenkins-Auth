@@ -1,0 +1,14 @@
+admins:
+  - name: obihann
+users:
+  - name: obihann
+  - name: bob
+  - name: notacat
+jobs:
+  - name: Test A
+    users:
+      - name: obihann
+      - name: bob
+  - name: Test B
+    users:
+      - name: obihann
